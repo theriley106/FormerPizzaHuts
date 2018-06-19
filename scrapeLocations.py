@@ -18,6 +18,7 @@ with open('locations.csv', 'rb') as f:
 	your_list = list(reader)
 
 ADDRESS_LIST = []
+your_list = open('formerLocations.txt').read().split("\n")
 i = 0
 for valueList in your_list:
 	try:
@@ -26,7 +27,7 @@ for valueList in your_list:
 	except Exception as exp:
 		print exp
 
-ADDRESS_LIST = open('formerLocations.txt').read().split("\n")
+#ADDRESS_LIST = open('formerLocations.txt').read().split("\n")
 
 addressList = chunks(ADDRESS_LIST, int(len(ADDRESS_LIST)/THREADS))
 information = {}
@@ -102,7 +103,7 @@ def grabImages(listOfLocations):
 
 def grabImage(page):
 	try:
-		link = "geo1.ggpht.com" + str(page.partition("geo1.ggpht.com"))[2].partition(')')[0][-1]
+		link = "geo1.ggpht.com" + str(page).partition("geo1.ggpht.com")[2].partition(')')[0][:-1]
 		return link
 	except:
 		return
