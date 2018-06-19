@@ -104,7 +104,7 @@ def grabImages(listOfLocations):
 
 def grabImage(page):
 	try:
-		print str(page).partition("geo1.ggpht.com")[2]
+		#print str(page).partition("geo1.ggpht.com")[2]
 		link = "geo1.ggpht.com" + str(page).partition("geo1.ggpht.com")[2].partition(')')[0][:-1]
 		return link
 	except:
