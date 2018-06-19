@@ -57,7 +57,6 @@ def FormerPizzaHut(page):
 		else:
 			return "idk"
 	except Exception as exp:
-		print exp
 		return "idk"
 
 def processLocations(listOfLocations):
