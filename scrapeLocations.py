@@ -72,6 +72,7 @@ def processLocations(listOfLocations):
 			res = grabSite(url)
 			page = bs4.BeautifulSoup(res.text, 'lxml')
 			print page.title.string
+			print("geo1.ggpht.com" in str(page))
 			raw_input(str(page.partition("//geo1.ggpht.com/"))[2].partition("'")[0])
 			if FormerPizzaHut(page) == True:
 				formerPizzaHuts.append(addressVal)
