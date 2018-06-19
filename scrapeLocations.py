@@ -22,7 +22,7 @@ your_list = open('formerLocations.txt').read().split("\n")
 i = 0
 for valueList in your_list:
 	try:
-		ADDRESS_LIST.append(valueList[-1].split("(")[0].strip()[:-1])
+		ADDRESS_LIST.append(valueList)
 		i += 1
 	except Exception as exp:
 		print exp
