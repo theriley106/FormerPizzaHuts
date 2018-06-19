@@ -89,6 +89,7 @@ def grabImages(listOfLocations):
 		lock.release
 		try:
 			addressVal = address
+			print address
 			address = address.replace(',', "%2C").replace(" ", "+")
 			url = "https://www.google.com/search?q=" + address
 			res = grabSite(url)
