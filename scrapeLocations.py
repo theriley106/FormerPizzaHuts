@@ -90,8 +90,8 @@ def grabImages(listOfLocations):
 		try:
 			addressVal = address
 			print address
-			address = address.replace(',', "%2C").replace(" ", "+")
-			url = "https://www.google.com/search?q=" + address
+			address = address.replace(" ", "+")
+			url = "https://www.google.com/maps/place/" + address
 			res = grabSite(url)
 			page = bs4.BeautifulSoup(res.text, 'lxml')
 			print page.title.string
