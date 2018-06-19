@@ -4,6 +4,7 @@ import csv
 import random
 import threading
 import RandomHeaders
+import json
 COUNT = 0
 lock = threading.Lock()
 def chunks(l, n):
@@ -25,8 +26,10 @@ for valueList in your_list:
 	except Exception as exp:
 		print exp
 
-addressList = chunks(ADDRESS_LIST, int(len(ADDRESS_LIST)/THREADS))
+ADDRESS_LIST = open('formerLocations.txt').split("\n")
 
+addressList = chunks(ADDRESS_LIST, int(len(ADDRESS_LIST)/THREADS))
+information = {}
 
 
 def grabSite(url):
@@ -72,27 +75,52 @@ def processLocations(listOfLocations):
 			res = grabSite(url)
 			page = bs4.BeautifulSoup(res.text, 'lxml')
 			print page.title.string
-			print("geo1.ggpht.com" in str(page))
-			raw_input(str(page.partition("//geo1.ggpht.com/"))[2].partition("'")[0])
 			if FormerPizzaHut(page) == True:
 				formerPizzaHuts.append(addressVal)
 				print("{} Former Pizza Huts Found".format(len(formerPizzaHuts)))
 		except Exception as exp:
 			print exp
 
+def grabImages(listOfLocations):
+	for address in listOfLocations:
+		lock.acquire
+		increment()
+		lock.release
+		try:
+			addressVal = address
+			address = address.replace(',', "%2C").replace(" ", "+")
+			url = "https://www.google.com/search?q=" + address
+			res = grabSite(url)
+			page = bs4.BeautifulSoup(res.text, 'lxml')
+			print page.title.string
+			tempInfo = grabImage(page)
+			print tempInfo
+			if tempInfo != None:
+				information[address] = tempInfo
+		except Exception as exp:
+			print exp
 
+def grabImage(page):
+	try:
+		link = "geo1.ggpht.com" + str(page.partition("geo1.ggpht.com"))[2].partition(')')[0][-1]
+		return link
+	except:
+		return
 
 
 
 if __name__ == '__main__':
-	threads = [threading.Thread(target=processLocations, args=(ar,)) for ar in addressList]
+	threads = [threading.Thread(target=grabImages, args=(ar,)) for ar in addressList]
 	for thread in threads:
 		thread.start()
 	for thread in threads:
 		thread.join()
-	with open ("test.txt","w")as fp:
+	'''with open ("test.txt","w")as fp:
 		for line in formerPizzaHuts:
-			fp.write(line+"\n")
+			fp.write(line+"\n")'''
+	with open('test.json', 'w') as outfile:
+    	json.dump(information, outfile)
+
 
 
 
