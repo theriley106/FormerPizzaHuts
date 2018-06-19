@@ -106,7 +106,7 @@ def grabImages(listOfLocations):
 def grabImage(page):
 	try:
 		#print str(page).partition("geo1.ggpht.com")[2]
-		link = "http://geo1.ggpht.com/cbk?panoid" + str(page).partition("http://geo1.ggpht.com/cbk?panoid")[2].partition('"')[0]
+		link = "http://geo1.ggpht.com/cbk?panoid=" + str(page).partition("panoid=")[2].partition('&')[0] + "&output=thumbnail&cb_client=search.LOCAL_UNIVERSAL.gps&thumb=2&w=2000&h=2000&yaw=279.03818&pitch=0&thumbfov=100"
 		return link
 	except:
 		return
