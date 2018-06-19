@@ -94,6 +94,7 @@ def grabImages(listOfLocations):
 			url = "https://www.google.com/maps/place/" + address
 			res = grabSite(url)
 			page = bs4.BeautifulSoup(res.text, 'lxml')
+			print('panoid' in str(page))
 			print page.title.string
 			tempInfo = grabImage(page)
 			print tempInfo
