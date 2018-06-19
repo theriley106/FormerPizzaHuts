@@ -119,7 +119,7 @@ if __name__ == '__main__':
 		for line in formerPizzaHuts:
 			fp.write(line+"\n")'''
 	with open('test.json', 'w') as outfile:
-    	json.dump(information, outfile)
+		json.dump(information, outfile)
 
 
 
