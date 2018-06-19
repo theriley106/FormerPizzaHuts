@@ -71,6 +71,7 @@ def processLocations(listOfLocations):
 			url = "https://www.google.com/search?q=" + address
 			res = grabSite(url)
 			page = bs4.BeautifulSoup(res.text, 'lxml')
+			print page.title.string
 			if FormerPizzaHut(page) == True:
 				formerPizzaHuts.append(addressVal)
 				print("{} Former Pizza Huts Found".format(len(formerPizzaHuts)))
