@@ -33,8 +33,8 @@ def grabSite(url):
 		try:
 			proxy = "108.59.14.203:13010"
 			proxies = {"http": proxy, "https": proxy}
-			headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
-			return requests.get(url, headers=RandomHeaders.LoadHeader(), proxies=proxies, timeout=10)
+			headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{}.0.2171.95 Safari/537.36'.format(random.randint(1, 99))}
+			return requests.get(url, headers=RandomHeaders.headers, proxies=proxies, timeout=10)
 		except Exception as exp:
 			print exp
 			pass
