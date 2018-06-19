@@ -26,7 +26,7 @@ for valueList in your_list:
 	except Exception as exp:
 		print exp
 
-ADDRESS_LIST = open('formerLocations.txt').split("\n")
+ADDRESS_LIST = open('formerLocations.txt').read().split("\n")
 
 addressList = chunks(ADDRESS_LIST, int(len(ADDRESS_LIST)/THREADS))
 information = {}
