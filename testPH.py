@@ -30,6 +30,8 @@ headers = {
 openNum = "027543"
 closedNum = "023524"
 fakeNum = "999991"
+openStores = []
+closedStores = []
 
 def chunks(l, n):
 	for i in xrange(0, len(l), n):
@@ -37,7 +39,7 @@ def chunks(l, n):
 
 def append_record(record, file):
 	with open(file, 'a') as f:
-		json.dump(record.text, f)
+		json.dump(record.content, f)
 		f.write("\n")
 
 def checkStore(storeNums):
@@ -52,10 +54,12 @@ def checkStore(storeNums):
 			#print json.dumps(response.json())
 			#print response.json()['response']['phone']
 			if response.json()['response']['phone'] == None:
-				print("Not real store")
+				pass
 			elif response.json()['response']['longitude'] == 0:
 				append_record(response, 'closedStores.json')
+				closedStores.append(storeNum)
 			else:
+				openStores.append(storeNum)
 				append_record(response, 'openStores.json')
 		except Exception as exp:
 			print exp
@@ -73,7 +77,7 @@ if __name__ == '__main__':
 		print("Started Counting")
 		while True:
 			time.sleep(60)
-			print COUNT
+			print("{} TOTAL | {} CLOSED | {} OPEN".format(COUNT, len(closedStores), len(openStores)))
 	b = threading.Thread(target=counting)
 	b.start()
 	threads = [threading.Thread(target=checkStore, args=(ar,)) for ar in listOfStoreNums]
