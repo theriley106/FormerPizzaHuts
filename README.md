@@ -1,4 +1,6 @@
-<h1 align="center">Former Pizza Huts</h1>
+<p align="center">
+  <img src="src/logo.png" width="250"/>
+</p>
 
 <h3 align="center">A data science exercise to programmatically find buildings that *used* to be Pizza Hut restaraunts...</h3>
 
