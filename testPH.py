@@ -67,6 +67,7 @@ def checkStore(storeNums):
 				openStores.append(storeNum)
 				append_record(response, 'openStores.json')
 		except Exception as exp:
+			print exp
 			pass
 		lock.acquire
 		increment()
