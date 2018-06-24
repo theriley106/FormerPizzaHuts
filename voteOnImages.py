@@ -101,6 +101,17 @@ def grabImagesFromAddress(address):
 			# Appends them to the list of images
 		return imageList
 
+def downloadImage(url, saveAs):
+	# Downloads an image from the internet
+	response = requests.get(url, stream=True)
+	# Pulls this image and saves as a requests object
+	with open(saveAs, 'wb') as out_file:
+		# Saves locally
+	    shutil.copyfileobj(response.raw, out_file)
+	del response
+
+
+
 
 
 
