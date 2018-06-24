@@ -2,9 +2,24 @@ import cv2
 import glob
 import os
 import shutil
+import random
+PROXIES = {}
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{}.0.2171.95 Safari/537.36'.format(random.randint(1, 99))}
+GOOGLE_STREETVIEW_API = "http://geo1.ggpht.com/cbk?panoid={0}&output=thumbnail&cb_client=search.LOCAL_UNIVERSAL.gps&thumb=2&w=2000&h=2000&yaw={2}&pitch=0&thumbfov=100"
 
 allFiles = sorted(glob.glob("BulkImages/*/"), key=os.path.getmtime)
 SAVE_TO = ""
+
+
+def grabSite(url):
+	# Makes network requests that are *ideally* not blocked by Google
+	for i in range(3):
+		# Tries it 3 times
+		try:
+			return requests.get(url, headers=HEADERS, proxies=PROXIES, timeout=10)
+			# Returns the content of the site
+		except Exception as exp:
+			pass
 
 def saveImage(fileName, saveToFolder="goodImages"):
 	if not os.path.exists(saveToFolder):
@@ -45,96 +60,90 @@ def genFileName(address, cameraTilt):
 	# Generates file names
 	return "{}/{}.jpg".format(address, cameraTilt)
 
-for address in returnAll("PizzaHutBulkImages"):
-	# Iterates through all addresses in PizzaHuts/
-	try:
-		# Try/Catch just in case there is an error
-		cameraTilt = list(range(0, 340, 20))
-		# This contains all camera tilt orientations in the Google Car
-		currentOrientation = cameraTilt[0]
-		while True:
-			fileName = genFileName(address, currentOrientation)
-			# Filename for this specific camera orientation
-			keyChoice = viewImage(fileName)
-			# Keychoice is the key a user presses in the image window
-			if keyChoice == ord('n'):
-				# The user inputted the letter N
-				newTilt = cameraTilt.index(currentOrientation) + 1
-				if newTilt == len(cameraTilt):
-					# This is going to refresh the orientation from 320+ to 0
-					# ^ This allows for a smoothless transition between images
-					newTilt = 0
-				currentOrientation = cameraTilt[newTilt]
-				# Sets new orientation
-			if keyChoice == ord("p"):
-				# The user inputted the letter P
-				currentOrientation = cameraTilt[cameraTilt.index(currentOrientation) - 1]
-				# Sets new orientation
-			if keyChoice == ord("q"):
-				# The user inputted the letter Q
-				# This indicates that this image did not have a Pizza hut
-				break
-				# Quits the while loop
-			if keyChoice == ord("s"):
-				# The user inputted the letter S
-				# This indicates the user wants to save on the current image
-				saveImage(fileName)
-				# Saves the image
-				break
-				# Quits the while loop
-			print("{} IN LOOP {}".format(currentOrientation, fileName))
-			# Prints out information about the image
-	except Exception as exp:
-		print exp
-		# Prints actual exception
+def generateRandomCameraOrientations(cameraOrientation, rangeVal=1):
+	# Returns a "Random" camera orientations
+	# This is to prevent against bot detection
+	# Google will ban requests if it's a constant Tilt #
+	# So this would change 320 into 320.124
+	return round(cameraOrientation + random.uniform(0, rangeVal), 5)
 
+def genListOfCameraOrientations():
+	# Returns a list of camera angles - Randomized using the above function
+	return [generateRandomCameraOrientations(val) for val in range(0, 340, 20)]
 
-for folder in allFiles:
+def grabPanoidFromHTML(page):
+	# Pulls a Google image Panoid string from a bs4 page object
 	try:
-		save = True
-		i = 0
-		e = i
-		print folder
-		file = folder + str(i) + ".jpg"
-		currentFileName = file
-		img = cv2.imread(file)
-		print file
-		cv2.imshow("Is there a Pizza Hut in the image?", img)
-		while True:
-			k = cv2.waitKey()
-			if k == ord('p'):
-				e = e - 1
-				fileName = folder + str(list(range(0, 360, 20))[e]) + ".jpg"
-				try:
-					cv2.imshow("Is there a Pizza Hut in the image?", cv2.imread(fileName))
-					currentFileName = fileName
-				except:
-					print("End of options")
-					cv2.imshow("Is there a Pizza Hut in the image?", cv2.imread(folder + "0.jpg"))
-					e = 0
-					currentFileName = folder + "0.jpg"
-			if k == ord('n'):
-				e = e + 1
-				fileName = folder + str(list(range(0, 360, 20))[e]) + ".jpg"
-				try:
-					cv2.imshow("Is there a Pizza Hut in the image?", cv2.imread(fileName))
-					currentFileName = fileName
-				except:
-					print("End of options")
-					cv2.imshow("Is there a Pizza Hut in the image?", cv2.imread(folder + "0.jpg"))
-					e = 0
-					currentFileName = folder + "0.jpg"
-			if k == ord('s'):
-				break
-			if k == ord('q'):
-				save = False
-				break
-		if save != False:
-			saveImage(currentFileName)
-		if save == False:
-			fileName = currentFileName
-			tempFolder = fileName.partition("BulkImages/")[2].partition("/")[0]
-			tempFileName = fileName[::-1].partition("/")[0][::-1]
-			os.system("rm -rf BulkImages/{}".format(tempFolder))
+		return str(page).partition("panoid=")[2].partition('&')[0]
+		# In the future change this to regex...
 	except:
-		print("ERROR")
+		# This means there is not a Panoid
+		return
+
+def grabImagesFromAddress(address):
+	imageList = []
+	# Contains a list of image URLs
+	addressURL = address.replace(" ", "+")
+	# Converts address to a valid URL address
+	url = "https://www.google.com/maps/place/" + addressURL
+	# Gens URL for this address
+	res = grabSite(url)
+	# Pulls the url that was previously defined
+	page = bs4.BeautifulSoup(res.text, 'lxml')
+	# Converts it into a BS4 Object
+	panoidVal = grabPanoidFromHTML(page)
+	# This grabs the Panoid val from that address
+	if panoidVal != None:
+		# This means the address did exist
+		for cameraOrientationVal in genListOfCameraOrientations():
+			# Iterates through all possible camera orientations
+			imageList.append(GOOGLE_STREETVIEW_API.format(panoidVal, cameraOrientationVal))
+			# Appends them to the list of images
+		return imageList
+
+
+
+
+if __name__ == '__main__':
+	for address in returnAll("PizzaHutBulkImages"):
+		# Iterates through all addresses in PizzaHuts/
+		try:
+			# Try/Catch just in case there is an error
+			cameraTilt = list(range(0, 340, 20))
+			# This contains all camera tilt orientations in the Google Car
+			currentOrientation = cameraTilt[0]
+			while True:
+				fileName = genFileName(address, currentOrientation)
+				# Filename for this specific camera orientation
+				keyChoice = viewImage(fileName)
+				# Keychoice is the key a user presses in the image window
+				if keyChoice == ord('n'):
+					# The user inputted the letter N
+					newTilt = cameraTilt.index(currentOrientation) + 1
+					if newTilt == len(cameraTilt):
+						# This is going to refresh the orientation from 320+ to 0
+						# ^ This allows for a smoothless transition between images
+						newTilt = 0
+					currentOrientation = cameraTilt[newTilt]
+					# Sets new orientation
+				if keyChoice == ord("p"):
+					# The user inputted the letter P
+					currentOrientation = cameraTilt[cameraTilt.index(currentOrientation) - 1]
+					# Sets new orientation
+				if keyChoice == ord("q"):
+					# The user inputted the letter Q
+					# This indicates that this image did not have a Pizza hut
+					break
+					# Quits the while loop
+				if keyChoice == ord("s"):
+					# The user inputted the letter S
+					# This indicates the user wants to save on the current image
+					saveImage(fileName)
+					# Saves the image
+					break
+					# Quits the while loop
+				print("{} IN LOOP {}".format(currentOrientation, fileName))
+				# Prints out information about the image
+		except Exception as exp:
+			print exp
+			# Prints actual exception
