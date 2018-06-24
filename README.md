@@ -1,8 +1,8 @@
 # Former Pizza Huts
 
-### A data science exercise to programmatically find buildings that *used* to be Pizza Hut restaraunts...
+<h3 align="center">A data science exercise to programmatically find buildings that *used* to be Pizza Hut restaraunts...</h3>
 
-<h2 align="center"> Main inspiration for this project: https://www.reddit.com/r/FormerPizzaHuts/</h2>
+<h2 align="center">My main inspiration for this project: https://www.reddit.com/r/FormerPizzaHuts/</h2>
 
 ##
 
