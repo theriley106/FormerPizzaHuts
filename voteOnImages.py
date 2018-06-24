@@ -5,6 +5,7 @@ import shutil
 import random
 import requests
 import bs4
+import csv
 
 PROXIES = {}
 GOOGLE_STREETVIEW_API = "http://geo1.ggpht.com/cbk?panoid={0}&output=thumbnail&cb_client=search.LOCAL_UNIVERSAL.gps&thumb=2&w=2000&h=2000&yaw={1}&pitch=0&thumbfov=100"
@@ -37,9 +38,9 @@ def grabListOfAllStores(fileName="locations.csv"):
 		# Reads it as a list
 	for storeInfo in your_list:
 		# Goes through all store info
-		storeAddress = storeInfo[4]
-		# This is the column with store address
-		storeLocation.append(store)
+		storeAddress = storeInfo[4][::-1].partition(",")[2][::-1]
+		# This is the column with store address - the Phone Number/postal code is removed
+		storeLocation.append(storeAddress)
 	return storeLocation
 
 def saveImage(fileName, saveToFolder="goodImages"):
@@ -164,6 +165,9 @@ def isFormerPizzaHut(address):
 
 
 if __name__ == '__main__':
+	allLocations = grabListOfAllStores()
+	for val in allLocations:
+		print val
 	'''for address in returnAll("PizzaHutBulkImages"):
 		# Iterates through all addresses in PizzaHuts/
 		try:
