@@ -3,20 +3,27 @@ import glob
 import os
 import shutil
 import random
+import requests
+import bs4
+
 PROXIES = {}
-HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{}.0.2171.95 Safari/537.36'.format(random.randint(1, 99))}
-GOOGLE_STREETVIEW_API = "http://geo1.ggpht.com/cbk?panoid={0}&output=thumbnail&cb_client=search.LOCAL_UNIVERSAL.gps&thumb=2&w=2000&h=2000&yaw={2}&pitch=0&thumbfov=100"
+GOOGLE_STREETVIEW_API = "http://geo1.ggpht.com/cbk?panoid={0}&output=thumbnail&cb_client=search.LOCAL_UNIVERSAL.gps&thumb=2&w=2000&h=2000&yaw={1}&pitch=0&thumbfov=100"
 
 allFiles = sorted(glob.glob("BulkImages/*/"), key=os.path.getmtime)
 SAVE_TO = ""
 
+def genUserAgent():
+	# Generates a random user agent
+	# The reason I wrote this myself instead of a third party module
+	# is that Google doesn't have Panoid in HTML if it's a mobile user-agent
+	return {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{}.0.2171.95 Safari/537.36'.format(random.randint(1, 99))}
 
 def grabSite(url):
 	# Makes network requests that are *ideally* not blocked by Google
 	for i in range(3):
 		# Tries it 3 times
 		try:
-			return requests.get(url, headers=HEADERS, proxies=PROXIES, timeout=10)
+			return requests.get(url, headers=genUserAgent(), proxies=PROXIES, timeout=10)
 			# Returns the content of the site
 		except Exception as exp:
 			pass
@@ -110,13 +117,40 @@ def downloadImage(url, saveAs):
 	    shutil.copyfileobj(response.raw, out_file)
 	del response
 
-
-
+def isFormerPizzaHut(address):
+	# Checks to see if this is still a Pizza Hut or if it has closed
+	# True - Means it is an old pizza hut operating as a new business
+	# False - Means it is a currently active pizza hut
+	address = address.replace(',', "%2C").replace(" ", "+")
+	# Converts the address into URL form
+	url = "https://www.google.com/search?q=" + address
+	# Generates URL
+	res = grabSite(url)
+	# Creates requests object
+	page = bs4.BeautifulSoup(res.text, 'lxml')
+	# Creates BS4 object
+	try:
+		# This Try/Except favors the fact that it is a currently open Pizza hut
+		# This is to prevent false positives (or I guess they are negatives... idk...)
+		if "address" in page.select("h4")[0].getText().lower():
+			# This means that the Google Page indicates that there is a business at this location
+			for val in page.select("h5"):
+				# Iterates through all H5 tags - these are business names
+				if "pizza hut" in val.getText().lower():
+					# This means a Pizza Hut is operating at this location
+					return False
+			return valueBool
+		else:
+			return False
+	except Exception as exp:
+		# This Try/Except favors the fact that it is a currently open Pizza hut
+		return False
+	return True
 
 
 
 if __name__ == '__main__':
-	for address in returnAll("PizzaHutBulkImages"):
+	'''for address in returnAll("PizzaHutBulkImages"):
 		# Iterates through all addresses in PizzaHuts/
 		try:
 			# Try/Catch just in case there is an error
@@ -157,4 +191,4 @@ if __name__ == '__main__':
 				# Prints out information about the image
 		except Exception as exp:
 			print exp
-			# Prints actual exception
+			# Prints actual exception'''
