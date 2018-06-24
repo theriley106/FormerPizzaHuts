@@ -28,5 +28,7 @@ Updated with Google Maps Images
 
 <p align="center"><i>
   <img src="PizzaHuts/201_Inman_Rd,_Lyman,SC.jpg" width="850"/>
-</i></p>Sakura Japanese Restaraunt - Carlos Mexican Grill #3 - 201 Inman Rd, Lyman SC 29365</h3>
 
+<h3>Sakura Japanese Restaraunt - Carlos Mexican Grill #3 - 201 Inman Rd, Lyman SC 29365</h3>
+
+</i></p>
