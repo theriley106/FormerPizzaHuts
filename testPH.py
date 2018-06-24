@@ -50,12 +50,7 @@ def checkStore(storeNums):
 			#print storeNum
 			proxies = {"http": "108.59.14.203:13010", "https":"108.59.14.203:13010"}
 			data = '{"storeNum":"NUM"}'.replace("NUM", str(storeNum))
-			for i in range(2):
-				try:
-					response = res.post('https://www.pizzahut.com/api.php/site/api_ajax/stores/getStoreAjax', headers=headers, data=data, proxies=proxies)
-					break
-				except:
-					pass
+			response = res.post('https://www.pizzahut.com/api.php/site/api_ajax/stores/getStoreAjax', headers=headers, data=data, proxies=proxies, timeout=10)
 			#print json.dumps(response.json())
 			#print response.json()['response']['phone']
 			if response.json()['response']['phone'] == None:
@@ -77,7 +72,7 @@ if __name__ == '__main__':
 	for i in range(0,999999):
 		storeList.append(str(i).zfill(6))
 	random.shuffle(storeList)
-	listOfStoreNums = chunks(storeList, int(len(storeList)/75))
+	listOfStoreNums = chunks(storeList, int(len(storeList)/15))
 	# ^ 50 Threads
 	def counting():
 		print("Started Counting")
