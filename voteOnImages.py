@@ -28,6 +28,20 @@ def grabSite(url):
 		except Exception as exp:
 			pass
 
+def grabListOfAllStores(fileName="locations.csv"):
+	storeLocation = []
+	with open(fileName, 'rb') as f:
+		# Opens up that CSV file
+		reader = csv.reader(f)
+		your_list = list(reader)
+		# Reads it as a list
+	for storeInfo in your_list:
+		# Goes through all store info
+		storeAddress = storeInfo[4]
+		# This is the column with store address
+		storeLocation.append(store)
+	return storeLocation
+
 def saveImage(fileName, saveToFolder="goodImages"):
 	if not os.path.exists(saveToFolder):
 		# Checks to see if the specified path exists
