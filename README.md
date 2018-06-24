@@ -1,3 +1,8 @@
+# Former Pizza Huts
+## A data science exercise to programmatically find buildings that *used* to be Pizza Hut restaraunts...
+
+<h2 align="center"> Main inspiration for this project: https://www.reddit.com/r/FormerPizzaHuts/</h2>
+
 # References
 
 https://github.com/kcooper1613/27_SortSearch
@@ -31,6 +36,8 @@ Updated with Google Maps Images
 
 <h3 align="center">Sakura Japanese Restaraunt - Carlos Mexican Grill #3 - 201 Inman Rd, Lyman SC 29365</h3>
 </i></p>
+
+# Locations Found
 
 <a href="PizzaHuts/1940_Main_St,_Green_Bay,WI.jpg">1940 Main St, Green Bay,WI</a><br>
 <a href="PizzaHuts/2309_Lafayette_Rd,_Fort_Oglethorpe,GA.jpg">2309 Lafayette Rd, Fort Oglethorpe,GA</a><br>
