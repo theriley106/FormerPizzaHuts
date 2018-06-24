@@ -9,9 +9,8 @@ import csv
 
 PROXIES = {}
 GOOGLE_STREETVIEW_API = "http://geo1.ggpht.com/cbk?panoid={0}&output=thumbnail&cb_client=search.LOCAL_UNIVERSAL.gps&thumb=2&w=2000&h=2000&yaw={1}&pitch=0&thumbfov=100"
-
 allFiles = sorted(glob.glob("BulkImages/*/"), key=os.path.getmtime)
-SAVE_TO = ""
+SAVE_TO_FOLDER = "images/"
 
 def genUserAgent():
 	# Generates a random user agent
@@ -125,8 +124,15 @@ def grabImagesFromAddress(address):
 
 def downloadImage(url, saveAs):
 	# Downloads an image from the internet
+	saveAs = SAVE_TO_FOLDER + saveAs
+	# Saves to the folder defined at the beginning
 	response = requests.get(url, stream=True)
 	# Pulls this image and saves as a requests object
+	folderName = SAVE_TO_FOLDER + saveAs.replace(SAVE_TO_FOLDER, "").partition("/")[0]
+	if not os.path.exists(folderName):
+		# Checks to see if the specified path exists
+		os.makedirs(folderName)
+		# Creates a folder
 	with open(saveAs, 'wb') as out_file:
 		# Saves locally
 	    shutil.copyfileobj(response.raw, out_file)
@@ -162,13 +168,29 @@ def isFormerPizzaHut(address):
 		return False
 	return True
 
-
+def extractOrientationFromURL(urlVal):
+	# Extracts the camera orientation from a URL
+	return urlVal.partition("&yaw=")[2].partition(".")[0]
 
 if __name__ == '__main__':
+	# This runs when the script is run directly
+	formerLocations = []
+	# This is a list of Pizza Huts that were open at one point but are now closed
 	allLocations = grabListOfAllStores()
-	for val in allLocations:
-		print val
-	'''for address in returnAll("PizzaHutBulkImages"):
+	# This is an archived list of ALL pizza hut locations
+	for location in allLocations:
+		# Iterates through all Pizza Hut Locations
+		if isFormerPizzaHut(location) == True:
+			# This means it was a Pizza hut at one point
+			formerLocations.append(location)
+			# Appends it to the list of former locations
+	for location in formerLocations:
+		# Iterates through all former pizza hut locations
+		for imageURL in grabImagesFromAddress(location):
+			# This contains URLs for all Google streetview images at various camera orientations
+			downloadImage(imageURL, '{}/{}.jpg'.format(location.replace(" ", "_"), extractOrientationFromURL(imageURL)))
+			# This downloads all images to a folder with the address name
+	for address in returnAll(SAVE_TO_FOLDER):
 		# Iterates through all addresses in PizzaHuts/
 		try:
 			# Try/Catch just in case there is an error
