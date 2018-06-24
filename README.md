@@ -6,14 +6,12 @@ Updated with Google Maps Images
 
 ## Examples
 
-<h2 align="center">outCaptcha - Solving reCAPTCHA 2.0 Without Human Interaction</h2>
 <p align="center"><i>
-  <img src="PizzaHuts/8514_Holcomb_Bridge_Rd,_Alpharetta,GA.jpg" width="450"/>
+  <img src="PizzaHuts/8514_Holcomb_Bridge_Rd,_Alpharetta,GA.jpg"/>
 </i></p>
 
-<h2 align="center">outCaptcha - Solving reCAPTCHA 2.0 Without Human Interaction</h2>
 <p align="center"><i>
-  <img src="PizzaHuts/4705_River_Oaks_Blvd,_Fort_Worth,TX.jpg" width="450"/>
+  <img src="PizzaHuts/4705_River_Oaks_Blvd,_Fort_Worth,TX.jpg"/>
 </i></p>
 
 
