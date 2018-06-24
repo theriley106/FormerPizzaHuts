@@ -50,7 +50,12 @@ def checkStore(storeNums):
 			#print storeNum
 			proxies = {"http": "108.59.14.203:13010", "https":"108.59.14.203:13010"}
 			data = '{"storeNum":"NUM"}'.replace("NUM", str(storeNum))
-			response = res.post('https://www.pizzahut.com/api.php/site/api_ajax/stores/getStoreAjax', headers=headers, data=data, proxies=proxies)
+			for i in range(2):
+				try:
+					response = res.post('https://www.pizzahut.com/api.php/site/api_ajax/stores/getStoreAjax', headers=headers, data=data, proxies=proxies)
+					break
+				except:
+					pass
 			#print json.dumps(response.json())
 			#print response.json()['response']['phone']
 			if response.json()['response']['phone'] == None:
@@ -62,7 +67,7 @@ def checkStore(storeNums):
 				openStores.append(storeNum)
 				append_record(response, 'openStores.json')
 		except Exception as exp:
-			print exp
+			pass
 		lock.acquire
 		increment()
 		lock.release
@@ -71,12 +76,12 @@ if __name__ == '__main__':
 	for i in range(0,999999):
 		storeList.append(str(i).zfill(6))
 	random.shuffle(storeList)
-	listOfStoreNums = chunks(storeList, int(len(storeList)/5))
+	listOfStoreNums = chunks(storeList, int(len(storeList)/75))
 	# ^ 50 Threads
 	def counting():
 		print("Started Counting")
 		while True:
-			time.sleep(60)
+			time.sleep(15)
 			print("{} TOTAL | {} CLOSED | {} OPEN".format(COUNT, len(closedStores), len(openStores)))
 	b = threading.Thread(target=counting)
 	b.start()
