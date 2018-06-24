@@ -1,4 +1,4 @@
-# Former Pizza Huts
+<h1 align="center">Former Pizza Huts</h1>
 
 <h3 align="center">A data science exercise to programmatically find buildings that *used* to be Pizza Hut restaraunts...</h3>
 
@@ -11,6 +11,10 @@
 https://github.com/kcooper1613/27_SortSearch
 
 Updated with Google Maps Images
+
+## Ensuring Accuracy
+
+To ensure that the Dataset of images was an accurate representation
 
 ## Examples
 
