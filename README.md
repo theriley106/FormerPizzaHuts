@@ -8,12 +8,6 @@
 
 ##
 
-# References
-
-https://github.com/kcooper1613/27_SortSearch
-
-Updated with Google Maps Images
-
 ## Finding Status Of Store
 
 Pizza Hut has an API that returns store information by Store Number.  Fortunately, this API has no real form of rate limitation, so I iterated through all possible store combinations.
