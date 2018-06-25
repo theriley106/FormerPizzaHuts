@@ -6,8 +6,6 @@
 
 <h2 align="center">My main inspiration for this project: https://www.reddit.com/r/FormerPizzaHuts/</h2>
 
-##
-
 ## Finding Status Of Store
 
 Pizza Hut has an API that returns store information by Store Number.  Fortunately, this API has no real form of rate limitation, so I iterated through all possible store combinations.
