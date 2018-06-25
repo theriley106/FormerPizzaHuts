@@ -18,6 +18,40 @@ Updated with Google Maps Images
 
 To ensure that the Dataset of images was an accurate representation
 
+## Finding Status Of Store
+
+Pizza Hut has an API that returns store information by Store Number.  Fortunately, this API has no real form of rate limitation, so I iterated through all possible store combinations.
+
+To return store information you simply send a POST request with form data that contains a storeNum parameter to the following API endpoint:
+
+<b>https://www.pizzahut.com/api.php/site/api_ajax/stores/getStoreAjax</b>
+
+You will get a response that looks similar to this:
+
+```javascript
+{"success":1,"response":{"storeNum":"027543","address1":"8024 Augusta Rd","address2":"Piedmont, SC 29673","zip":"29673","phone":"(864) 277-1222","landmark":"","hrs_available":1,"hrs_concepts":[{"service":"carryout"},{"service":"delivery"}],"hrs_times":[{"day":"Sun","col0":"11:00am - 11:00pm","col1":"11:00am - 11:00pm"},{"day":"Mon","col0":"11:00am - 11:00pm","col1":"11:00am - 11:00pm"},{"day":"Tues","col0":"11:00am - 11:00pm","col1":"11:00am - 11:00pm"},{"day":"Weds","col0":"11:00am - 11:00pm","col1":"11:00am - 11:00pm"},{"day":"Thurs","col0":"11:00am - 11:00pm","col1":"11:00am - 11:00pm"},{"day":"Fri","col0":"11:00am - 12:00am","col1":"11:00am - 12:00am"},{"day":"Sat","col0":"11:00am - 12:00am","col1":"11:00am - 12:00am"}],"dinein_available":0,"services":"Carryout, Delivery","wing_street":1,"latitude":34.696159,"longitude":-82.398854,"closure_reason":"","carryout_future_order":true,"delivery_future_order":true,"city":"Piedmont","offline":false,"status":"open","occasion_status":"DC","store_status":"DC","delivery_available":true,"offline_status_msg":"","first_delivery":"11:00 AM","first_carryout":"11:00 AM","open_later_today_delivery":"","open_later_today_carryout":"","loyalty":{"address":"8024 Augusta Rd","city":"Piedmont","state":"SC","state_name":"South Carolina","zip":29673,"phone":"(864) 277-1222","status":"DC","carryout_open":"11:00AM","carryout_close":"11:00PM","carryout_future_order":true,"delivery_open":"11:00AM","delivery_close":"11:00PM","delivery_future_order":true,"open_for_delivery":true,"closure_reason":"","onlineStatus":"online","firstTimeDiscount":false,"currentlyOpen":true,"deliveryAvailable":true,"carryoutAvailable":true,"acceptFutureOrders":true,"landmark":null,"futuredelivery":true,"futurecarryout":true,"pizzaEvoTestStore":true,"offlineStatusMsg":null,"loyalty":"Y","tmp_offline_msg":"","store_lastUpdate":null,"showDeliveryTime":"Y","promiseTimeDel":50,"promiseTimeLastUpdateDel":{"date":"2018-06-24 16:27:00.000000","timezone_type":3,"timezone":"US\/Central"},"showCarryoutTime":"Y","promiseTimeCo":15,"promiseTimeLastUpdateCo":{"date":"2018-06-24 16:25:00.000000","timezone_type":3,"timezone":"US\/Central"},"promiseTime":50}}}
+```
+
+Here is the Python function used to determine if the store was Open, Closed, or Non-Existant (Note that this simply prints out the results, however the actual code used in main.py will save store information to a local file.)
+
+```python
+def checkStore(storeNums):
+	data = '{"storeNum":"NUM"}'.replace("NUM", str(storeNum))
+	response = requests.post('https://www.pizzahut.com/api.php/site/api_ajax/stores/getStoreAjax', data=data)
+	if response.json()['response']['phone'] == None:
+		print("Not a Real Store")
+	elif response.json()['response']['longitude'] == 0:
+		print("Closed Store")
+	else:
+		print("Open Store")
+```
+
+
+
+## Grabbing Images
+
+
+
 ## Examples
 
 <p align="center"><i>
