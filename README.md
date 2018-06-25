@@ -160,6 +160,11 @@ def checkStore(storeNums):
 
 ## Grabbing Images
 
+After finding restaraunt addresses that have recently closed, we use Google Maps to extract photos from the location.  We make a Google search for the address to extract the *Panoid* from the Google Maps URL.  We can then use this Panoid to directly pull images using the following API endpoint:
+
+http://geo1.ggpht.com/cbk?panoid={panoid}&output=thumbnail&cb_client=search.LOCAL_UNIVERSAL.gps&thumb=2&w=2000&h=2000&yaw={cameraTilt}&pitch=0&thumbfov=100
+
+The program will extract 17 images from each address using camera orientation values ranging from 0 to 340.  Additionally, camera orientation values are "randomized" by adding a random float between 0 and 1 to the orientaiton.  This does not significantly affect the camera orientation, but it prevents bot detection when accessing this API endpoint frequently.
 
 
 ## Examples
