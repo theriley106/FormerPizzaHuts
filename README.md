@@ -14,10 +14,6 @@ https://github.com/kcooper1613/27_SortSearch
 
 Updated with Google Maps Images
 
-## Ensuring Accuracy
-
-To ensure that the Dataset of images was an accurate representation
-
 ## Finding Status Of Store
 
 Pizza Hut has an API that returns store information by Store Number.  Fortunately, this API has no real form of rate limitation, so I iterated through all possible store combinations.
@@ -188,6 +184,49 @@ def grabImagesFromAddress(address):
 			imageList.append(GOOGLE_STREETVIEW_API.format(panoidVal, cameraOrientationVal))
 			# Appends them to the list of images
 		return imageList
+```
+
+
+## Ensuring Accuracy
+
+I manually verified photos of the stores using a Python script that allows you to quickly analyze the images pulled from Google streetview.  This script iterates through all addresses, and opens up a window that allows you to move through images to pick the image that best displays the *former* Pizza Hut location.
+
+```python
+cameraTilt = list(range(0, 340, 20))
+# This contains all camera tilt orientations in the Google Car
+currentOrientation = cameraTilt[0]
+while True:
+	fileName = genFileName(address, currentOrientation)
+	# Filename for this specific camera orientation
+	keyChoice = viewImage(fileName)
+	# Keychoice is the key a user presses in the image window
+	if keyChoice == ord('n'):
+		# The user inputted the letter N
+		newTilt = cameraTilt.index(currentOrientation) + 1
+		if newTilt == len(cameraTilt):
+			# This is going to refresh the orientation from 320+ to 0
+			# ^ This allows for a smoothless transition between images
+			newTilt = 0
+		currentOrientation = cameraTilt[newTilt]
+		# Sets new orientation
+	if keyChoice == ord("p"):
+		# The user inputted the letter P
+		currentOrientation = cameraTilt[cameraTilt.index(currentOrientation) - 1]
+		# Sets new orientation
+	if keyChoice == ord("q"):
+		# The user inputted the letter Q
+		# This indicates that this image did not have a Pizza hut
+		break
+		# Quits the while loop
+	if keyChoice == ord("s"):
+		# The user inputted the letter S
+		# This indicates the user wants to save on the current image
+		saveImage(fileName)
+		# Saves the image
+		break
+		# Quits the while loop
+	print("{} IN LOOP {}".format(currentOrientation, fileName))
+	# Prints out information about the image
 ```
 
 
