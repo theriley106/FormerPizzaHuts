@@ -194,6 +194,31 @@ Here is an example of the generated Captcha image:
   <img src="src/captchaExample.png"/>
 </p>
 
+Captcha images were then sent to DeathByCaptcha, and the *quantity* of solved coordinates were used to find the images that contained photos of the restaraunt.
+
+This is really difficult to explain over text, so here is an example using psuedocode:
+
+```python
+# This is pseudocode, but the captcha.py file contains the actual python code
+listOfImages = GrabImages("123 Test Street, Palo Alto CA")
+# Grabs the Pizza Hut images at 123 Test Street, Palo Alto CA...
+listOfImageInfo = []
+for image in listOfImages:
+    # Iterates through all 17 camera orientations
+    fakeCaptcha = generateCaptcha(image)
+    # Generates a "Fake" captcha image
+    coordinates = SolveCaptcha(fakeCaptcha)
+    # DBC returns coordinates of the squares that contain restaraunts
+    listOfImageInfo({"image_file": image, "number_of_restaraunts": len(coordinates)})
+    # Creates a dictionary with image file and the number of squares containing restaraunts
+mostRestaraunts = 0
+for imageInfo in listOfImageInfo:
+    if imageInfo['number_of_restaraunts'] > mostRestaraunts:
+        bestImage = imageInfo['image_file']
+return bestImage
+```
+
+
 
 
 
