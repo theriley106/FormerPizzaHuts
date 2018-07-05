@@ -148,7 +148,7 @@ def checkStore(storeNums):
 
 ## Grabbing Images
 
-After finding restaraunt addresses that have recently closed, we use Google Maps to extract photos from the location.  We make a Google search for the address to extract the *Panoid* from the Google Maps URL.  We can then use this Panoid to directly pull images using the following API endpoint:
+After finding restaraunt addresses that have recently closed, the program uses Google Maps to extract photos from the location.  It does this by making a Google search for the address to extract the *Panoid* value from the first Google Maps URL in the search results.  The Panoid is then used to directly pull images using the following API endpoint:
 
 http://geo1.ggpht.com/cbk?panoid={panoid}&output=thumbnail&cb_client=search.LOCAL_UNIVERSAL.gps&thumb=2&w=2000&h=2000&yaw={cameraTilt}&pitch=0&thumbfov=100
 
