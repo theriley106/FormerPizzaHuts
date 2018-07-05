@@ -181,6 +181,22 @@ def grabImagesFromAddress(address):
 
 ## Ensuring Accuracy
 
+The most time intensive part of this project was identifying the best *camera orientation* for each set of location images.  The program pulls **17** camera orientations for each address, and the pizza hut is usually in only 1 or 2 of these images.
+
+
+### Method #1
+
+The most cost effective way of finding the ideal camera orientation was using an unrelated service called **DeathByCapthca**.  DBC uses real people to solve Captcha images, but the service is *usually* used by spammers and bot creators.  I theorized that if I turned my Pizza Hut images into Captchas, DBC would send back the image coordinates of the Pizza Hut locations.
+
+Here is an example of the generated Captcha image:
+
+<p align="center"><i>
+  <img src="src/captchaExample.png"/>
+</p>
+
+
+
+
 I manually verified photos of the stores using a Python script that allows you to quickly analyze the images pulled from Google streetview.  This script iterates through all addresses, and opens up a window that allows you to move through images to pick the image that best displays the *former* Pizza Hut location.
 
 ```python
