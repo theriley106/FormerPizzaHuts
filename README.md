@@ -220,7 +220,7 @@ return bestImage
 
 ### Method #2
 
-The captcha method worked for *most* images, but there was still a handful of photos that either didn't contain a Pizza Hut or that contained photos of *other buildings* in the image.  To resolve this issue, I created a python script that iterates through all remaining addresses, and opens up a window that allows you to move through images quickly to pick the image that best displays the *former* Pizza Hut location.  This also allowed me to eliminate Pizza Hut locations that had been torn down and replaced with building that didn't keep the iconic Pizza Hut building style...
+The captcha method worked for *most* images, but there was still a handful of photos that either didn't contain a Pizza Hut or that contained photos of *other buildings* in the image.  To resolve this issue, I created a python script that iterates through all remaining addresses, and opens up a window that allows you to move through images quickly to pick the image that best displays the *former* Pizza Hut location.  This also allows you to eliminate Pizza Hut locations that had been torn down and replaced with a building that didn't keep the iconic Pizza Hut building style...
 
 ```python
 cameraTilt = list(range(0, 340, 20))
