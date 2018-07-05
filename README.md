@@ -194,9 +194,9 @@ Here is an example of the generated Captcha image:
   <img src="src/captchaExample.png"/>
 </p>
 
-Captcha images were then sent to DeathByCaptcha, and the *quantity* of solved coordinates were used to find the images that contained photos of the restaraunt.
+Captcha images were then sent to DeathByCaptcha, and the *quantity* of solved coordinates were used to find the best image of each restaraunt.
 
-This is really difficult to explain over text, so here is an example using psuedocode:
+Here is an example using psuedocode:
 
 ```python
 # This is pseudocode, but the captcha.py file contains the actual python code
@@ -218,11 +218,9 @@ for imageInfo in listOfImageInfo:
 return bestImage
 ```
 
+### Method #2
 
-
-
-
-I manually verified photos of the stores using a Python script that allows you to quickly analyze the images pulled from Google streetview.  This script iterates through all addresses, and opens up a window that allows you to move through images to pick the image that best displays the *former* Pizza Hut location.
+The captcha method worked for *most* images, but there was still a handful of photos that either didn't contain a Pizza Hut or that contained photos of *other buildings* in the image.  To resolve this issue, I created a python script that iterates through all remaining addresses, and opens up a window that allows you to move through images quickly to pick the image that best displays the *former* Pizza Hut location.  This also allowed me to eliminate Pizza Hut locations that had been torn down and replaced with building that didn't keep the iconic Pizza Hut building style...
 
 ```python
 cameraTilt = list(range(0, 340, 20))
