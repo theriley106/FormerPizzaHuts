@@ -152,7 +152,7 @@ After finding restaraunt addresses that have recently closed, the program uses G
 
 http://geo1.ggpht.com/cbk?panoid={panoid}&output=thumbnail&cb_client=search.LOCAL_UNIVERSAL.gps&thumb=2&w=2000&h=2000&yaw={cameraTilt}&pitch=0&thumbfov=100
 
-The program will extract 17 images from each address using camera orientation values ranging from 0 to 340.  Additionally, camera orientation values are "randomized" by adding a random float between 0 and 1 to the orientaiton.  This does not significantly affect the camera orientation, but it prevents bot detection when accessing this API endpoint frequently.
+After pulling the panoid it will extract 17 images from each address using camera orientation values ranging from 0 to 340.  Additionally, camera orientation values are "randomized" by adding a random float between 0 and 1 to the orientaiton.  This does not significantly affect the camera orientation, but it prevents bot detection when accessing this API endpoint frequently.
 
 
 ```python
@@ -190,7 +190,7 @@ The most cost effective way of finding the ideal camera orientation was using an
 
 Here is an example of the generated Captcha image:
 
-<p align="center"><i>
+<p align="center">
   <img src="src/captchaExample.png"/>
 </p>
 
