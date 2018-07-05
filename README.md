@@ -289,6 +289,34 @@ while True:
 <h3 align="center">Sakura Japanese Restaraunt - Carlos Mexican Grill #3 - 201 Inman Rd, Lyman SC 29365</h3>
 </i></p>
 
+## Post Virality
+
+I wanted to get as much project feedback as possible from Reddit, so I used the <a href="https://bigquery.cloud.google.com/table/fh-bigquery:reddit_comments.2015_05">Reddit Post Bigquery Dataset</a> to find the most ideal time to post the project on /r/FormerPizzaHuts.
+
+I used the following SQL query to pull upvote count by UTC-Timestamp:
+
+```sql
+#standardSQL
+SELECT
+  created_utc, score
+FROM `fh-bigquery.reddit_posts.201*`
+WHERE subreddit = "FormerPizzaHuts"
+```
+
+After analyzing the dataset I found that posting this project on Reddit on a Monday at 9:00PM PST would result in the highest upvote count.
+
+<p align="center">
+  <img src="src/byDay.png" width="850"/></p>
+<h3 align="center">Upvotes by Day</h3>
+</i></p>
+
+<p align="center">
+  <img src="src/byTime.png" width="850"/></p>
+<h3 align="center">Upvotes by Time</h3>
+</i></p>
+
+
+
 # Locations Found
 
 <a href="PizzaHuts/1940_Main_St,_Green_Bay,WI.jpg">1940 Main St, Green Bay,WI</a><br>
