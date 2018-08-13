@@ -2,7 +2,7 @@
   <img src="src/logo.png" width="250"/>
 </p>
 
-<h3 align="center">A data science exercise to programmatically find buildings that *used* to be Pizza Hut restaraunts...</h3>
+<h3 align="center">A data science exercise to programmatically find buildings that *used* to be Pizza Hut restaurants...</h3>
 
 <h2 align="center">My main inspiration for this project: https://www.reddit.com/r/FormerPizzaHuts/</h2>
 
